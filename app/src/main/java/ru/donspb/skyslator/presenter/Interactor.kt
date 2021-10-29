@@ -1,7 +1,7 @@
-package ru.donspb.skyslator.model.remote
+package ru.donspb.skyslator.presenter
 
 import io.reactivex.Observable
 
-interface Repository<T> {
+interface Interactor<T> {
     fun getData(word: String): Observable<T>
 }

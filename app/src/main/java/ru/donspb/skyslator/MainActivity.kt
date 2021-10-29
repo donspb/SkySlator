@@ -8,7 +8,7 @@ import ru.donspb.skyslator.databinding.ActivityMainBinding
 import ru.donspb.skyslator.presenter.MainPresenter
 import ru.donspb.skyslator.view.MainFragment
 
-class MainActivity : MvpAppCompatActivity(), Contract.MainView {
+class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
 

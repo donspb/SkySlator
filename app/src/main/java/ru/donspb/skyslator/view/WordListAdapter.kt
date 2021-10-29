@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.donspb.skyslator.R
-import ru.donspb.skyslator.model.DataModel
+import ru.donspb.skyslator.databinding.WordlistItemBinding
+import ru.donspb.skyslator.model.data.DataModel
 
 class WordListAdapter(
     private var onListItemClickListener: OnListItemClickListener,
@@ -19,10 +20,14 @@ class WordListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
-            WordListAdapter.RecyclerItemViewHolder {
-        return RecyclerItemViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.wordlist_item, parent, false) as View)
-    }
+            WordListAdapter.RecyclerItemViewHolder = RecyclerItemViewHolder(
+            WordlistItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            .apply {
+                itemView.setOnClickListener {
+                    onListItemClickListener
+                }
+            }
+
 
     override fun onBindViewHolder(holder: WordListAdapter.RecyclerItemViewHolder, position: Int) {
         holder.bind(data.get(position))
@@ -30,15 +35,12 @@ class WordListAdapter(
 
     override fun getItemCount(): Int = data.size
 
-    inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class RecyclerItemViewHolder(val binding: WordlistItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: DataModel) {
-            itemView.findViewById<TextView>(R.id.header_wordlist_item).text = data.text
-            itemView.findViewById<TextView>(R.id.description_wordlist_item).text =
-                data.meanings?.get(0)?.translation?.translation
-            itemView.setOnClickListener {
-            //TODO Clicklistener
-            }
+            binding.headerWordlistItem.text = data.text
+            binding.descriptionWordlistItem.text = data.meanings?.get(0)?.translation?.translation
         }
     }
 

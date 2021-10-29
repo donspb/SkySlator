@@ -1,26 +1,22 @@
 package ru.donspb.skyslator.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import moxy.MvpAppCompatFragment
-import moxy.ktx.moxyPresenter
-import ru.donspb.skyslator.Contract
 import ru.donspb.skyslator.R
 import ru.donspb.skyslator.databinding.FragmentMainBinding
-import ru.donspb.skyslator.model.DataModel
+import ru.donspb.skyslator.model.data.AppState
+import ru.donspb.skyslator.model.data.DataModel
+import ru.donspb.skyslator.presenter.IMainPresenter
 import ru.donspb.skyslator.presenter.MainPresenter
 
-class MainFragment : MvpAppCompatFragment(), Contract.MainFragmentView {
+class MainFragment : Fragment(), MainFragmentView {
 
-    val presenter: MainPresenter by moxyPresenter {
-        MainPresenter(this)
-    }
+    lateinit var presenter: IMainPresenter<MainFragmentView>
 
     var adapter: WordListAdapter? = null
     private var binding: FragmentMainBinding? = null
@@ -32,20 +28,26 @@ class MainFragment : MvpAppCompatFragment(), Contract.MainFragmentView {
             }
         }
 
+    fun createPresenter(): IMainPresenter<MainFragmentView> {
+        return MainPresenter()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentMainBinding.inflate(inflater, container, false).also {
+    ): View = FragmentMainBinding.inflate(inflater, container, false).also {
         binding = it
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter = createPresenter()
         binding?.searchButton?.setOnClickListener { onClick(binding?.searchInputField?.text.toString()) }
     }
 
-    fun onClick(word: String) {
-        if (word.length > 0) presenter.buttonGoPressed(word)
+    private fun onClick(word: String) {
+        binding?.searchDialogScreen?.visibility = View.GONE
+        if (word.isNotEmpty()) presenter.buttonGoPressed(word)
     }
 
     override fun onDestroy() {
@@ -57,35 +59,59 @@ class MainFragment : MvpAppCompatFragment(), Contract.MainFragmentView {
         fun newInstance() = MainFragment()
     }
 
-    override fun showLoading() {
-        binding?.searchDialogScreen?.visibility = View.GONE
+    private fun showLoading() {
         binding?.dataShowerLayer?.visibility = View.GONE
         binding?.errorScreenLayout?.visibility = View.GONE
         binding?.loadingScreenLayout?.visibility = View.VISIBLE
     }
 
-    override fun showError(error: String) {
-        binding?.searchDialogScreen?.visibility = View.GONE
+    private fun showError(errorMsg: String?) {
         binding?.dataShowerLayer?.visibility = View.GONE
         binding?.loadingScreenLayout?.visibility = View.GONE
         binding?.errorScreenLayout?.visibility = View.VISIBLE
+        binding?.errorHeaderTv?.text = errorMsg ?: getString(R.string.error_unknown)
     }
 
-    override fun showData(data: List<DataModel>) {
-
-        if (adapter == null) {
-            binding?.wordsRecycler?.layoutManager = LinearLayoutManager(context)
-            binding?.wordsRecycler?.adapter = WordListAdapter(onListItemClickListener, data)
-        } else {
-            adapter!!.setData(data)
-        }
-
-        binding?.searchDialogScreen?.visibility = View.GONE
+    private fun showData() {
         binding?.loadingScreenLayout?.visibility = View.GONE
         binding?.errorScreenLayout?.visibility = View.GONE
         binding?.dataShowerLayer?.visibility = View.VISIBLE
+    }
 
+    override fun renderData(appState: AppState) {
+        when (appState) {
+            is AppState.Success -> {
+                val dataModel = appState.data
+                if (dataModel == null || dataModel.isEmpty())  {
+                    showError(getString(R.string.error_empty_server_response))
+                } else {
+                    showData()
+                    if (adapter == null) {
+                        binding?.wordsRecycler?.layoutManager = LinearLayoutManager(context)
+                        binding?.wordsRecycler?.adapter = WordListAdapter(
+                            onListItemClickListener, dataModel)
+                    } else {
+                        adapter!!.setData(dataModel)
+                    }
+                }
+            }
+            is AppState.Error -> {
+                showError(appState.error)
+            }
+            is AppState.Loading -> {
+                showLoading()
+            }
+        }
+    }
 
+    override fun onStart() {
+        super.onStart()
+        presenter.attachView(this)
+    }
+
+    override fun onStop() {
+        presenter.detachView(this)
+        super.onStop()
     }
 
 }

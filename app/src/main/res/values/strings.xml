@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">SkySlator</string>
 
+    <!-- Error messages -->
+    <string name="error_empty_server_response">Server returned no data</string>
+    <string name="error_unknown">Unknown Error</string>
+
     <!-- Search page -->
     <string name="search_string_hint">Type a word to search...</string>
     <string name="search_start_button_text">Go</string>

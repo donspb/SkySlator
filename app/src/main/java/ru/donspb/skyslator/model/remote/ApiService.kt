@@ -1,9 +1,9 @@
 package ru.donspb.skyslator.model.remote
 
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
-import ru.donspb.skyslator.model.DataModel
+import ru.donspb.skyslator.model.data.DataModel
 
 interface ApiService {
 
