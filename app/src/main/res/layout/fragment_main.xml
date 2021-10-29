@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.MainFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -10,7 +11,8 @@
         android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_gravity="top">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/search_input_layout"
@@ -18,7 +20,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/search_string_hint"
             android:layout_marginTop="@dimen/search_field_margin_tb"
-            android:layout_marginHorizontal="@dimen/search_field_margin_lr">
+            android:layout_marginHorizontal="@dimen/search_field_margin_lr"
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/search_input_field"
@@ -38,17 +41,11 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <FrameLayout
         android:id="@+id/data_shower_layer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:visibility="gone">
-
-        <TextView
-            android:id="@+id/data_word_searched"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/words_recycler"
@@ -56,7 +53,15 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/recycler_view_margin_top"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_back"
+            android:layout_width="@dimen/fab_size"
+            android:layout_height="@dimen/fab_size"
+            android:src="@drawable/back_icon"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"/>
+    </FrameLayout>
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
