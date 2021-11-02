@@ -1,11 +1,8 @@
 package ru.donspb.skyslator.view
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import ru.donspb.skyslator.R
 import ru.donspb.skyslator.databinding.WordlistItemBinding
 import ru.donspb.skyslator.model.data.DataModel
 

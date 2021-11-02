@@ -1,11 +1,8 @@
 package ru.donspb.skyslator
 
 import androidx.appcompat.app.AppCompatActivity
-import moxy.MvpAppCompatActivity
 import android.os.Bundle
-import moxy.ktx.moxyPresenter
 import ru.donspb.skyslator.databinding.ActivityMainBinding
-import ru.donspb.skyslator.presenter.MainPresenter
 import ru.donspb.skyslator.view.MainFragment
 
 class MainActivity : AppCompatActivity() {

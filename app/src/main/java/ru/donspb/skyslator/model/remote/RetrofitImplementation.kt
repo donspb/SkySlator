@@ -1,25 +1,21 @@
 package ru.donspb.skyslator.model.remote
 
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import io.reactivex.Observable
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.donspb.skyslator.model.data.DataModel
 
-class RetrofitImplementation {
+class RetrofitImplementation : Repository<List<DataModel>>{
 
-    fun getData(word: String): Observable<List<DataModel>> {
-        return createRetrofit().create(ApiService::class.java).search(word)
+    override suspend fun getData(word: String): List<DataModel> {
+        return createRetrofit().create(ApiService::class.java).searchAsync(word).await()
     }
 
     private fun createRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL_LOCATIONS)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
     }
 
