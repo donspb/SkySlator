@@ -4,12 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.donspb.skyslator.databinding.WordlistItemBinding
+import ru.donspb.skyslator.model.convertMeaningsToString
 import ru.donspb.skyslator.model.data.DataModel
 
 class WordListAdapter(
-    private var onListItemClickListener: OnListItemClickListener,
-    private var data: List<DataModel>
-) : RecyclerView.Adapter<WordListAdapter.RecyclerItemViewHolder>() {
+    private var onListItemClickListener: OnListItemClickListener) :
+    RecyclerView.Adapter<WordListAdapter.RecyclerItemViewHolder>() {
+
+    private var data: List<DataModel> = listOf()
 
     fun setData(data: List<DataModel>) {
         this.data = data
@@ -37,7 +39,12 @@ class WordListAdapter(
 
         fun bind(data: DataModel) {
             binding.headerWordlistItem.text = data.text
-            binding.descriptionWordlistItem.text = data.meanings?.get(0)?.translation?.translation
+            binding.descriptionWordlistItem.text = convertMeaningsToString(data.meanings!!)
+            itemView.setOnClickListener {
+                onListItemClickListener.onItemClick(data)
+            }
+
+                //binding.descriptionWordlistItem.text = data.meanings?.get(0)?.translation?.translation
         }
     }
 

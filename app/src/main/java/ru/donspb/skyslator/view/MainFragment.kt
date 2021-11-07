@@ -4,35 +4,40 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import dagger.android.AndroidInjection
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.donspb.skyslator.Consts
 import ru.donspb.skyslator.R
 import ru.donspb.skyslator.databinding.FragmentMainBinding
+import ru.donspb.skyslator.model.convertMeaningsToString
 import ru.donspb.skyslator.model.data.AppState
 import ru.donspb.skyslator.model.data.DataModel
+import ru.donspb.skyslator.view.wordview.WordFragment
 import ru.donspb.skyslator.viewmodel.MainViewModel
-import javax.inject.Inject
+
 
 class MainFragment : Fragment(), MainFragmentView {
 
     lateinit var model: MainViewModel
 //    private val observer = Observer<AppState> { renderData(it) }
-    var adapter: WordListAdapter? = null
+    private val adapter by lazy { WordListAdapter(onListItemClickListener) }
     private var binding: FragmentMainBinding? = null
 
     private val onListItemClickListener: WordListAdapter.OnListItemClickListener =
         object : WordListAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
-                Toast.makeText(getContext(), data.text, Toast.LENGTH_SHORT).show()
+                activity?.supportFragmentManager?.apply {
+                    beginTransaction()
+                        .replace(R.id.container, WordFragment.newInstance(Bundle().apply {
+                            putString(Consts.WORD_HEADER_KEY, data.text)
+                            putString(Consts.WORD_DESCR_KEY, convertMeaningsToString(data.meanings!!))
+                            putString(Consts.WORD_IMAGEURL_KEY, data.meanings[0].imageUrl)
+                        }))
+                        .addToBackStack("")
+                        .commit()
+                }
             }
         }
 
@@ -48,12 +53,14 @@ class MainFragment : Fragment(), MainFragmentView {
 
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
+        binding?.wordsRecycler?.layoutManager = LinearLayoutManager(context)
+        binding?.wordsRecycler?.adapter = adapter
         binding?.searchButton?.setOnClickListener {
             onClick(binding?.searchInputField?.text.toString()) }
         binding?.fabBack?.setOnClickListener {
             binding?.searchInputField?.text?.clear()
             showSearch()
-            binding?.wordsRecycler?.adapter = null
+            adapter.setData(listOf())
         }
     }
 
@@ -105,13 +112,7 @@ class MainFragment : Fragment(), MainFragmentView {
                     showError(Throwable(getString(R.string.error_empty_server_response)))
                 } else {
                     showData()
-                    if (adapter == null) {
-                        binding?.wordsRecycler?.layoutManager = LinearLayoutManager(context)
-                        binding?.wordsRecycler?.adapter = WordListAdapter(
-                            onListItemClickListener, dataModel)
-                    } else {
-                        adapter!!.setData(dataModel)
-                    }
+                    adapter.setData(dataModel)
                 }
             }
             is AppState.Error -> {

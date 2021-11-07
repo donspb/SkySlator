@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Casper/_Git/SkySlator/app/src/main/res/layout/fragment_word.xml" value="0.20520833333333333" />
         <entry key="..\:/_ASProjects/SkySlator/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/_ASProjects/SkySlator/app/src/main/res/layout/data_layout.xml" value="0.1707193515704154" />
         <entry key="..\:/_ASProjects/SkySlator/app/src/main/res/layout/error_layout.xml" value="0.8178571428571428" />
@@ -13,7 +14,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
