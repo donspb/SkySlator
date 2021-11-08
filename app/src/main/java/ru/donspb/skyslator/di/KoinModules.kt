@@ -9,6 +9,8 @@ import ru.donspb.skyslator.model.local.RepositoryLocalImpl
 import ru.donspb.skyslator.model.remote.Repository
 import ru.donspb.skyslator.model.remote.RetrofitImplementation
 import ru.donspb.skyslator.view.main.MainInteractor
+import ru.donspb.skyslator.view.history.HistoryInteractor
+import ru.donspb.skyslator.viewmodel.HistoryViewModel
 import ru.donspb.skyslator.viewmodel.MainViewModel
 
 val application = module {
@@ -33,5 +35,5 @@ val mainScreen = module {
 
 val historyScreen = module {
     factory { HistoryViewModel(get()) }
-    factory { HistoryInteractor(get(), get())}
+    factory { HistoryInteractor() }
 }

@@ -3,7 +3,7 @@ package ru.donspb.skyslator.viewmodel
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.launch
 import ru.donspb.skyslator.model.data.AppState
-import ru.donspb.skyslator.view.wordview.HistoryInteractor
+import ru.donspb.skyslator.view.history.HistoryInteractor
 
 class HistoryViewModel(private val interactor: HistoryInteractor) : BaseViewModel<AppState>() {
 

@@ -1,4 +1,4 @@
-package ru.donspb.skyslator.view.wordview
+package ru.donspb.skyslator.view.history
 
 import ru.donspb.skyslator.model.data.AppState
 import ru.donspb.skyslator.model.local.RepositoryLocalImpl
