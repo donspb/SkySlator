@@ -1,4 +1,4 @@
-package ru.donspb.skyslator.view
+package ru.donspb.skyslator.view.main
 
 import ru.donspb.skyslator.model.data.AppState
 

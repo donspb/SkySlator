@@ -1,4 +1,4 @@
-package ru.donspb.skyslator.view
+package ru.donspb.skyslator.view.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,11 +14,12 @@ import ru.donspb.skyslator.databinding.FragmentMainBinding
 import ru.donspb.skyslator.model.convertMeaningsToString
 import ru.donspb.skyslator.model.data.AppState
 import ru.donspb.skyslator.model.data.DataModel
+import ru.donspb.skyslator.view.BaseFragment
 import ru.donspb.skyslator.view.wordview.WordFragment
 import ru.donspb.skyslator.viewmodel.MainViewModel
 
 
-class MainFragment : Fragment(), MainFragmentView {
+class MainFragment : BaseFragment<AppState>() {
 
     lateinit var model: MainViewModel
 //    private val observer = Observer<AppState> { renderData(it) }
@@ -68,7 +69,6 @@ class MainFragment : Fragment(), MainFragmentView {
         binding?.searchDialogScreen?.visibility = View.VISIBLE
         binding?.dataShowerLayer?.visibility = View.GONE
         binding?.errorScreenLayout?.visibility = View.GONE
-        binding?.loadingScreenLayout?.visibility = View.GONE
     }
 
     private fun onClick(word: String) {
@@ -85,44 +85,44 @@ class MainFragment : Fragment(), MainFragmentView {
         fun newInstance() = MainFragment()
     }
 
-    private fun showLoading() {
-        binding?.dataShowerLayer?.visibility = View.GONE
-        binding?.errorScreenLayout?.visibility = View.GONE
-        binding?.loadingScreenLayout?.visibility = View.VISIBLE
-    }
+//    private fun showLoading() {
+//        binding?.dataShowerLayer?.visibility = View.GONE
+//        binding?.errorScreenLayout?.visibility = View.GONE
+//        binding?.loadingScreenLayout?.visibility = View.VISIBLE
+//    }
+//
+//    private fun showError(error: Throwable?) {
+//        binding?.dataShowerLayer?.visibility = View.GONE
+//        binding?.loadingScreenLayout?.visibility = View.GONE
+//        binding?.errorScreenLayout?.visibility = View.VISIBLE
+//        binding?.errorHeaderTv?.text = error?.message ?: getString(R.string.error_unknown)
+//    }
+//
+//    private fun showData() {
+//        binding?.loadingScreenLayout?.visibility = View.GONE
+//        binding?.errorScreenLayout?.visibility = View.GONE
+//        binding?.dataShowerLayer?.visibility = View.VISIBLE
+//    }
 
-    private fun showError(error: Throwable?) {
-        binding?.dataShowerLayer?.visibility = View.GONE
-        binding?.loadingScreenLayout?.visibility = View.GONE
-        binding?.errorScreenLayout?.visibility = View.VISIBLE
-        binding?.errorHeaderTv?.text = error?.message ?: getString(R.string.error_unknown)
-    }
-
-    private fun showData() {
-        binding?.loadingScreenLayout?.visibility = View.GONE
-        binding?.errorScreenLayout?.visibility = View.GONE
-        binding?.dataShowerLayer?.visibility = View.VISIBLE
-    }
-
-    override fun renderData(appState: AppState) {
-        when (appState) {
-            is AppState.Success -> {
-                val dataModel = appState.data
-                if (dataModel.isNullOrEmpty())  {
-                    showError(Throwable(getString(R.string.error_empty_server_response)))
-                } else {
-                    showData()
-                    adapter.setData(dataModel)
-                }
-            }
-            is AppState.Error -> {
-                showError(appState.error)
-            }
-            is AppState.Loading -> {
-                showLoading()
-            }
-        }
-    }
+//    override fun renderData(appState: AppState) {
+//        when (appState) {
+//            is AppState.Success -> {
+//                val dataModel = appState.data
+//                if (dataModel.isNullOrEmpty())  {
+//                    showError(Throwable(getString(R.string.error_empty_server_response)))
+//                } else {
+//                    showData()
+//                    adapter.setData(dataModel)
+//                }
+//            }
+//            is AppState.Error -> {
+//                showError(appState.error)
+//            }
+//            is AppState.Loading -> {
+//                showLoading()
+//            }
+//        }
+//    }
 
     private fun initViewModel() {
         if (binding?.wordsRecycler?.adapter != null) {
@@ -131,5 +131,9 @@ class MainFragment : Fragment(), MainFragmentView {
         val viewModel: MainViewModel by viewModel()
         model = viewModel
         model.subscribe().observe(viewLifecycleOwner, Observer<AppState> { renderData(it) })
+    }
+
+    override fun setDataToAdapter(data: List<DataModel>) {
+        TODO("Not yet implemented")
     }
 }

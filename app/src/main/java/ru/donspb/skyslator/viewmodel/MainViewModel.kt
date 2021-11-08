@@ -6,7 +6,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.donspb.skyslator.model.data.AppState
 import ru.donspb.skyslator.model.parseSearchResults
-import ru.donspb.skyslator.view.MainInteractor
+import ru.donspb.skyslator.view.main.MainInteractor
 
 
 class MainViewModel(private val interactor: MainInteractor) :

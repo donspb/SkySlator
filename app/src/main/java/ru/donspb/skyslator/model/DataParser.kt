@@ -1,8 +1,10 @@
 package ru.donspb.skyslator.model
 
+import android.provider.ContactsContract
 import ru.donspb.skyslator.model.data.AppState
 import ru.donspb.skyslator.model.data.DataModel
 import ru.donspb.skyslator.model.data.Meanings
+import ru.donspb.skyslator.model.local.HistoryEntity
 
 fun parseSearchResults(data: AppState): AppState {
     val newSearchResults = arrayListOf<DataModel>()
@@ -17,6 +19,29 @@ fun parseSearchResults(data: AppState): AppState {
         }
     }
     return AppState.Success(newSearchResults)
+}
+
+fun parseLocalSearchResult(appState: AppState): AppState {
+    return AppState.Success(mapResult(appState, false))
+}
+
+private fun mapResult(appState: AppState): List<DataModel> {
+    val newSearchResults = arrayListOf<DataModel>()
+    when (appState) {
+        is AppState.Success -> {
+            getSuccessResultData(appState, newSearchResults)
+        }
+    }
+    return newSearchResults
+}
+
+private fun getSuccessResultData(appState: AppState.Success, newDataModels: ArrayList<DataModel>) {
+    val dataModels: List<DataModel> = appState.data as List<DataModel>
+    if (dataModels.isNotEmpty()) {
+        for (searchResult in dataModels) {
+            newDataModels.add(DataModel(searchResult.text, arrayListOf()))
+        }
+    }
 }
 
 private fun parseResult(dataModel: DataModel, newDataModels: ArrayList<DataModel>) {
@@ -43,4 +68,28 @@ fun convertMeaningsToString(meanings: List<Meanings>): String {
         }
     }
     return meaningsSeparatedByComma
+}
+
+fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<DataModel> {
+    val dataModel = ArrayList<DataModel>()
+    if (!list.isNullOrEmpty()) {
+        for (entity in list) {
+            dataModel.add(DataModel(entity.word, null))
+        }
+    }
+    return dataModel
+}
+
+fun convertDataModelSuccessToEntity(appState: AppState): HistoryEntity? {
+    return when (appState) {
+        is AppState.Success -> {
+            val searchResult = appState.data
+            if (searchResult.isNullOrEmpty() || searchResult[0].text.isNullOrEmpty()) {
+                null
+            } else {
+                HistoryEntity(searchResult[0].text!!, null)
+            }
+        }
+        else -> null
+    }
 }

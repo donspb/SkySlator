@@ -1,4 +1,4 @@
-package ru.donspb.skyslator.view
+package ru.donspb.skyslator.view.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,8 @@ import ru.donspb.skyslator.model.convertMeaningsToString
 import ru.donspb.skyslator.model.data.DataModel
 
 class WordListAdapter(
-    private var onListItemClickListener: OnListItemClickListener) :
+    private var onListItemClickListener: OnListItemClickListener
+) :
     RecyclerView.Adapter<WordListAdapter.RecyclerItemViewHolder>() {
 
     private var data: List<DataModel> = listOf()
@@ -19,7 +20,7 @@ class WordListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
-            WordListAdapter.RecyclerItemViewHolder = RecyclerItemViewHolder(
+            RecyclerItemViewHolder = RecyclerItemViewHolder(
             WordlistItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             .apply {
                 itemView.setOnClickListener {
@@ -28,7 +29,7 @@ class WordListAdapter(
             }
 
 
-    override fun onBindViewHolder(holder: WordListAdapter.RecyclerItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
         holder.bind(data.get(position))
     }
 

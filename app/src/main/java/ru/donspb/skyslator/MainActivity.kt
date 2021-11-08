@@ -3,7 +3,7 @@ package ru.donspb.skyslator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ru.donspb.skyslator.databinding.ActivityMainBinding
-import ru.donspb.skyslator.view.MainFragment
+import ru.donspb.skyslator.view.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
