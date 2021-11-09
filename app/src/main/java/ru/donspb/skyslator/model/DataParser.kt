@@ -22,7 +22,7 @@ fun parseSearchResults(data: AppState): AppState {
 }
 
 fun parseLocalSearchResult(appState: AppState): AppState {
-    return AppState.Success(mapResult(appState, false))
+    return AppState.Success(mapResult(appState))
 }
 
 private fun mapResult(appState: AppState): List<DataModel> {

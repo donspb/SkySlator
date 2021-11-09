@@ -38,22 +38,22 @@ abstract class BaseFragment<T: AppState>: Fragment() {
     }
 
     private fun showLoading() {
-        bindingMainLayout?.dataShowerLayer?.visibility = View.GONE
-        bindingMainLayout?.errorScreenLayout?.visibility = View.GONE
-        bindingLoadLayout?.loadingScreenLayout?.visibility = View.VISIBLE
+        bindingMainLayout.dataShowerLayer.visibility = View.GONE
+        bindingMainLayout.errorScreenLayout.visibility = View.GONE
+        bindingLoadLayout.loadingScreenLayout.visibility = View.VISIBLE
     }
 
     private fun showError(error: Throwable?) {
-        bindingMainLayout?.dataShowerLayer?.visibility = View.GONE
-        bindingLoadLayout?.loadingScreenLayout?.visibility = View.GONE
-        bindingMainLayout?.errorScreenLayout?.visibility = View.VISIBLE
-        bindingMainLayout?.errorHeaderTv?.text = error?.message ?: getString(R.string.error_unknown)
+        bindingMainLayout.dataShowerLayer.visibility = View.GONE
+        bindingLoadLayout.loadingScreenLayout.visibility = View.GONE
+        bindingMainLayout.errorScreenLayout.visibility = View.VISIBLE
+        bindingMainLayout.errorHeaderTv.text = error?.message ?: getString(R.string.error_unknown)
     }
 
     private fun showData() {
-        bindingLoadLayout?.loadingScreenLayout?.visibility = View.GONE
-        bindingMainLayout?.errorScreenLayout?.visibility = View.GONE
-        bindingMainLayout?.dataShowerLayer?.visibility = View.VISIBLE
+        bindingLoadLayout.loadingScreenLayout.visibility = View.GONE
+        bindingMainLayout.errorScreenLayout.visibility = View.GONE
+        bindingMainLayout.dataShowerLayer.visibility = View.VISIBLE
     }
 
 

@@ -1,6 +1,7 @@
 package ru.donspb.skyslator.di
 
 import androidx.room.Room
+import org.koin.core.scope.get
 import org.koin.dsl.module
 import ru.donspb.skyslator.model.data.DataModel
 import ru.donspb.skyslator.model.local.HistoryDataBase

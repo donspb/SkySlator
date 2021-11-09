@@ -1,9 +1,7 @@
 package ru.donspb.skyslator.view.main
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +19,7 @@ import ru.donspb.skyslator.viewmodel.MainViewModel
 
 class MainFragment : BaseFragment<AppState>() {
 
-    lateinit var model: MainViewModel
+    override lateinit var model: MainViewModel
 //    private val observer = Observer<AppState> { renderData(it) }
     private val adapter by lazy { WordListAdapter(onListItemClickListener) }
     private var binding: FragmentMainBinding? = null
@@ -136,4 +134,5 @@ class MainFragment : BaseFragment<AppState>() {
     override fun setDataToAdapter(data: List<DataModel>) {
         TODO("Not yet implemented")
     }
+
 }
