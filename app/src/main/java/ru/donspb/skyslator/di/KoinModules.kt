@@ -21,7 +21,7 @@ val application = module {
     single {
         get<HistoryDataBase>().historyDao()
     }
-    single<Repository<List<DataModel>>>() {
+    single<Repository<List<DataModel>>> {
         RetrofitImplementation()
     }
     single<RepositoryLocal<List<DataModel>>> {
@@ -30,11 +30,11 @@ val application = module {
 }
 
 val mainScreen = module {
-    factory { MainInteractor() }
+    factory { MainInteractor(get(), get()) }
     factory { MainViewModel(get())}
 }
 
 val historyScreen = module {
     factory { HistoryViewModel(get()) }
-    factory { HistoryInteractor() }
+    factory { HistoryInteractor(get()) }
 }

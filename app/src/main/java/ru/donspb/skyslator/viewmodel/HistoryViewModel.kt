@@ -3,6 +3,7 @@ package ru.donspb.skyslator.viewmodel
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.launch
 import ru.donspb.skyslator.model.data.AppState
+import ru.donspb.skyslator.model.parseLocalSearchResult
 import ru.donspb.skyslator.view.history.HistoryInteractor
 
 class HistoryViewModel(private val interactor: HistoryInteractor) : BaseViewModel<AppState>() {
@@ -19,8 +20,8 @@ class HistoryViewModel(private val interactor: HistoryInteractor) : BaseViewMode
         viewModelCoroutineScope.launch { startInteractor(word) }
     }
 
-    private suspend fun startInteractor(word) {
-        _mutableLiveData.postValue(parseLocalSearchResults(interactor.getData(wordd)))
+    private suspend fun startInteractor(word: String) {
+        _mutableLiveData.postValue(parseLocalSearchResult(interactor.getData(word)))
     }
 
     override fun handleError(error: Throwable) {
